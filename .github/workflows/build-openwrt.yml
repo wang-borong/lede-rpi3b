@@ -24,10 +24,8 @@ on:
 
 env:
   REPO_URL: https://downloads.openwrt.org/releases/19.07.2/targets/sunxi/cortexa7/openwrt-sdk-19.07.2-sunxi-cortexa7_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
-  REPO_BRANCH: master
-  CONFIG_FILE: .config
   DIY_SH: diy.sh
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
@@ -70,9 +68,9 @@ jobs:
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_SH
-        cd openwrt
+        cd openwrt-sdk-19.07.2-sunxi-cortexa7_gcc-7.5.0_musl_eabi.Linux-x86_64
+        wget https://downloads.openwrt.org/releases/19.07.2/targets/sunxi/cortexa7/config.buildinfo && mv config.buildinfo && mv config.buildinfo .config
+        chmod +x ../$DIY_SH
         ../$DIY_SH
 
     - name: Download package
