@@ -19,11 +19,11 @@ on:
       - '.config'
 #  schedule:
 #    - cron: 0 8 * * 5
-#  watch:
-#    types: started
+   watch:
+     types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://downloads.openwrt.org/releases/19.07.2/targets/sunxi/cortexa7/openwrt-sdk-19.07.2-sunxi-cortexa7_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
   REPO_BRANCH: master
   CONFIG_FILE: .config
   DIY_SH: diy.sh
@@ -57,13 +57,13 @@ jobs:
         curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
 
     - name: Clone source code
-      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+      run: wget $REPO_URL  && tar xf openwrt-sdk-19.07.2-sunxi-cortexa7_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz && rm openwrt-sdk-19.07.2-sunxi-cortexa7_gcc-7.5.0_musl_eabi.Linux-x86_64.tar.xz
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: cd openwrt* && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: cd openwrt* && ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
